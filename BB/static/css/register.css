@@ -1,0 +1,41 @@
+
+/* Full-width input fields */
+  input[type=text], input[type=password], input[type=email] {
+  width: 100%;
+  padding: 5px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+#registerForm {
+    align-self: center;
+     width: 500px;
+     margin: auto;
+    padding: 50px;
+    border:  3px solid #4681a0;
+
+}
+
+h1 {
+  padding:60px;
+  align-self:center;
+  text-align : center;
+  width : 100%;
+}
+
+#registerDiv{
+    padding: 50px;
+    align: center;
+}

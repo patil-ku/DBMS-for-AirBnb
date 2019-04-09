@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+</head>
+<body>
+
+    <div class="container">
+        <h1>User Login</h1>
+
+        <p>
+        <div id="login">
+            <form method="POST" action="/login">
+                User Name:<br>
+                <input type="text" name="user_name" placeholder="UserName" > <br> <br>
+                Password: <br>
+                <input type="password" name="user_password" placeholder="Password"> <br>
+                <br>
+                <input type="submit" value="Login">
+            </form>
+
+        </div>
+                {% if error %}
+                <p class="error"><strong>Error:</strong> {{ error }}
+                {% endif %}
+                </p>
+    </div>
+
+</body>
+</html>
