@@ -133,7 +133,7 @@
 
         <div class="jumbotron content-jumbotron">
             {% if user %}
-        <h3> Welcome {{ session['first_name'] }}, </h3>
+        <h3> Welcome {{ user }}, </h3>
         {% else %}
         <h3> Welcome {{ session['first_name'][0] }}, </h3>
         {% endif %}
@@ -256,7 +256,7 @@
                                         <td>{{ item[3] }}</td>
                                         <td>{{ item[4] }}</td>
                                         <td>{{ item[5] }}</td>
-                                        <td><input type="radio" id="radio2" name="updatePropertySelectPID" value="{{ item[0] }}"  onclick="setText('{{ item[1] }}');">
+                                        <td><input type="radio" id="radio2" name="updatePropertySelectPID" value="{{ item[0] }}"  onclick="setText('{{ item[1] }}');" required>
                                             </td>
                                     </tr>
                                     {% endfor %}
@@ -273,7 +273,7 @@
                                         <div class="card card-body update-card">
                                             <div class="form-group">
                                                 <label for="updatePropertyName"> Property Name </label>
-                                                <input type="text" class="form-control" id="updatePropertyName"  name="update_property_name" readonly>
+                                                <input type="text" class="form-control" id="updatePropertyName"  name="update_property_name" readonly >
                                             </div>
 
                                          <!--   <div class="form-row">
