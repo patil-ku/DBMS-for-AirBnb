@@ -132,7 +132,11 @@
     </nav>
 
         <div class="jumbotron content-jumbotron">
-            <h3> Welcome {{ session['first_name'][0] }}, </h3>
+            {% if user %}
+        <h3> Welcome {{ session['first_name'] }}, </h3>
+        {% else %}
+        <h3> Welcome {{ session['first_name'][0] }}, </h3>
+        {% endif %}
           <p>
             <h5> Manage your properties here </h5>
         </div>

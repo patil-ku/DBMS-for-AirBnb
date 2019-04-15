@@ -36,10 +36,10 @@ def user_login():
             print(session['first_name'])
             if type_of_user[0] == 1:
                 # This means user is a client
-                return render_template("userHome.html", user=session['first_name'])
+                return render_template("userHome.html")
             elif type_of_user[0] == 2:
                 # This user is a property owner
-                return render_template("propertyOwnerHome.html", user=session['first_name'])
+                return render_template("propertyOwnerHome.html")
             else:
                 return render_template("adminPage.html")
         else:
@@ -47,7 +47,7 @@ def user_login():
             return render_template("home.html", error=error)
     except Exception as e:
         print(e)
-        return render_template("home.html")
+        return render_template("home.html", error='Database error, please try back again')
     finally:
         cursor.close()
         conn.close()
@@ -77,27 +77,29 @@ def register():
         result = cursor.fetchone()
         if result:
             error = "This username already exists, please take another username"
-            return render_template("register.html", error=error)
+            return render_template("home.html", error=error)
     except Exception as e:
         print(e)
-        return render_template("register.html")
+        return render_template("home.html", error='Database error while retrieving data, please try again later')
     try:
         if user_type == 'owner':
             cursor.callproc('property_user_registration', [user_username, user_password, user_first_name, user_last_name,
                                                            user_email, user_address, user_phone, ])
             conn.commit()
+            session['username'] = user_username
             session['first_name'] = user_first_name
-            return render_template('propertyOwnerHome.html')
+            return render_template('propertyOwnerHome.html', user=session['first_name'])
         else:
             cursor.callproc('client_user_registration', [user_username, user_password, user_first_name, user_last_name,
                                                          user_email, user_address, user_phone, ])
             conn.commit()
+            session['username'] = user_username
             session['first_name'] = user_first_name
-            return render_template('userHome.html')
+            return render_template('userHome.html', user=session['first_name'])
     except Exception as e:
         print(e)
-        error = "Something went wrong, please try again"
-        return render_template("register.html", error=error)
+        error = "Something went wrong with the database, please try again"
+        return render_template("home.html", error=error)
     finally:
         cursor.close()
         conn.close()
@@ -115,10 +117,10 @@ def find_properties():
     session['property_filter'] = (session['username'], check_in, check_out)
     if max_rent < min_rent:
         error = "Please ensure that minimum rent is less that maximum rent"
-        return render_template("userHome.html", error=error, user=session['first_name'])
+        return render_template("userHome.html", error=error)
     if check_in > check_out:
         error = "Please ensure that check in date is after the check out date"
-        return render_template("userHome.html", error=error, user=session['first_name'])
+        return render_template("userHome.html", error=error)
     try:
         cursor.execute('CALL client_user_filtering(%s,%s,%s,%s,%s)', (city, min_rent, max_rent, check_in,
                                                                       check_out,))
@@ -127,7 +129,7 @@ def find_properties():
     except Exception as e:
         print(e)
         error = "Something went wrong please try again"
-        return render_template("userHome.html", error=error, user=session['first_name'])
+        return render_template("userHome.html", error=error)
     finally:
         cursor.close()
         conn.close()
@@ -143,12 +145,12 @@ def book_property():
         session.pop('property_filter', None)
         cursor.callproc('client_user_booking', procedure_inputs)
         conn.commit()
-        return render_template('userHome.html', user=session['first_name'], info='Successfully booked your stay, what '
-                                                                                 'else would you like to do?')
+        return render_template('userHome.html', info='Successfully booked your stay, what '
+                                                     'else would you like to do?')
     except Exception as e:
         print(e)
         error = "Something went wrong, please try again"
-        return render_template("userHome.html", error=error, user=session['first_name'])
+        return render_template("userHome.html", error=error)
     finally:
         cursor.close()
         conn.close()
@@ -163,14 +165,14 @@ def show_change_booking():
         cursor.execute('CALL client_view_booking(%s)', (username,))
         result = cursor.fetchall()
         print(result)
-        if result is None:
-            return render_template("userHome.html", error="You don't have any bookings")
+        if result:
+            return render_template("userHome.html", result=result, update=True)
         else:
-            return render_template("userHome.html", result=result, update=True, user=session['first_name'])
+            return render_template("userHome.html", error="You don't have any bookings")
     except Exception as e:
         print(e)
         error = "Something went wrong while fetching data, please try again"
-        return render_template("userHome.html", error=error, user=session['first_name'])
+        return render_template("userHome.html", error=error)
     finally:
         cursor.close()
         conn.close()
@@ -189,7 +191,7 @@ def change_booking():
     try:
         if cursor.callproc('client_update_booking', [property_id, check_in_date, check_out_date, ]):
             conn.commit()
-            return render_template('userHome.html', user=session['first_name'], info="We successfully updated your stay")
+            return render_template('userHome.html', info="We successfully updated your stay")
         else:
             return render_template('changeBooking.html', update=True, error='Could not update, please try again')
     except Exception as e:
@@ -209,14 +211,14 @@ def show_cancel_booking():
         cursor.execute('CALL client_view_booking(%s)', (username,))
         result = cursor.fetchall()
         print(result)
-        if result is None:
+        if not result:
             return render_template("userHome.html", error="You don't have any bookings")
         else:
-            return render_template("userHome.html", cancel=result, user=session['first_name'])
+            return render_template("userHome.html", cancel=result)
     except Exception as e:
         print(e)
         error = "Something went wrong while fetching data, please try again"
-        return render_template("userHome.html", error=error, user=session['first_name'])
+        return render_template("userHome.html", error=error)
     finally:
         cursor.close()
         conn.close()
@@ -230,7 +232,7 @@ def cancel_booking():
     try:
         if cursor.callproc('client_delete_booking', [booking_id, ]):
             conn.commit()
-            return render_template('userHome.html', user=session['first_name'], info="We successfully cancelled your booking")
+            return render_template('userHome.html', info="We successfully cancelled your booking")
         else:
             return render_template('userHome.html', error='Could not update your data')
     except Exception as e:
@@ -251,10 +253,9 @@ def show_owner_properties():
         cursor.execute('CALL owner_property_list(%s)', (session['username'],))
         result = cursor.fetchall()
         if result:
-            return render_template('propertyOwnerHome.html', result=result, user=name)
+            return render_template('propertyOwnerHome.html', result=result)
         else:
-            return render_template('propertyOwnerHome.html', error='Sorry, you do not have any properties listed yet',
-                                   user=name)
+            return render_template('propertyOwnerHome.html', error='Sorry, you do not have any properties listed yet')
     except Exception as e:
         print(e)
         return render_template('propertyOwnerHome.html', error='Database error, please try again')
@@ -337,7 +338,7 @@ def update_user():
             return render_template('userHome.html', error='Failed updating user profile, please try again!')
     except Exception as e:
         print(e)
-        return render_template('userHome.html', error='Database Error', user=session['username'])
+        return render_template('userHome.html', error='Database Error')
     finally:
         cursor.close()
         conn.close()
