@@ -1,0 +1,79 @@
+
+/* Full-width input fields */
+  input[type=text], input[type=number], input[type=date],  {
+  width: 100%;
+  padding: 5px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=number]:focus, input[type=date]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+#bookingFilter {
+    border:  3px solid #4681a0;
+    padding: 10%;
+    width: 100%;
+
+}
+
+h4 {
+  align-self:center;
+  text-align : center;
+  width : 100%;
+}
+
+#findPropertiesDiv{
+    margin: 0 auto;
+    align: center;
+    width: 100%;
+}
+
+input,
+label {
+    margin: .4rem 0;
+}
+
+.note {
+    font-size: .8em;
+}
+
+
+.bookingBtn{
+    width: 200px;
+}
+
+.userUpdateButtons{
+    padding: 50px;
+    align: auto;
+}
+
+
+/**********************************************************************************
+CSS FOR property owner HOME page
+***********************************************************************************/
+
+.property-add-form{
+   margin: 5px;
+   width: 95%;
+   border-radius: 5px;
+}
+.property-manage-form{
+   margin:10px;
+   width:80%;
+   border-radius: 5px;
+}
+
+
+.add-property-div {
+    border-right : 2px solid white;
+}

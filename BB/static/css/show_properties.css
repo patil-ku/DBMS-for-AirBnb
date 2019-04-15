@@ -1,0 +1,24 @@
+th, td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-dark .table-bordered .table-hover {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  position: center;
+}
+
+table.propertyTable tr:hover td{
+   background-color: #ffff99;
+}
+
+.property-view{
+    display: inline-block;
+    position: relative;
+    margin: 0 auto;
+    width: 100px;
+}

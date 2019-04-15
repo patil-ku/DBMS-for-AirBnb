@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/userHome.css') }}">
+        <link rel="stylesheet" type="text/css" href="../static/css/userHome.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <!-- Script to populate the text box from the selected value, just a small function so embedded in the same script -->
+        <script type="text/javascript">
+           var date = new Date();
+           date.setDate(date.getDate());
+
+            $('#date').datepicker({
+                startDate: date
+            });
+        </script>
+        <title>User Home - AirBnB</title>
+      </head>
+<body>
+            <!-- Modal for updating user profile -->
+            <div class="modal fade" id="update-user" tabindex="-1" role="dialog" aria-labelledby="update-user-label" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="update-user-label">Enter the new values for the user</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="/updateUser">
+                                <div class="form-group">
+                                    <label for="update_user_name" class="col-form-label">Username:</label>
+                                    <input type="text" class="form-control"  id="update_user_name" value="{{ session['username'] }}" readonly>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="update_user_first_name" class="col-form-label">First Name:</label>
+                                            <input type="text" class="form-control" name="new_first_name" id="update_user_first_name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="update_user_last_name" class="col-form-label">Last Name:</label>
+                                            <input type="text" class="form-control" name="new_last_name" id="update_user_last_name" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="update_user_password" class="col-form-label">New Password:</label>
+                                    <input type="password" class="form-control" name="new_password" id="update_user_password" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="update_user_address" class="col-form-label">Address:</label>
+                                    <input type="text" class="form-control" name="new_address" id="update_user_address"  required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="update_user_email" class="col-form-label">New Email:</label>
+                                    <input type="email" class="form-control" name="new_email" id="update_user_email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="update_user_number" class="col-form-label">New Phone Number:</label>
+                                    <input type="tel" class="form-control" id="update_user_number" name="new_number" required>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <button type="submit" class="btn btn-primary">Update Details</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for confirming delete user -->
+            <div class="modal fade" id="delete-user" tabindex="-1" role="dialog" aria-labelledby="delete-user-label" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="delete-user-label">Confirm deleting your profile. You will not be able to retrieve your profile back</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="/deleteUserAccount">
+                                <div class="form-row">
+                                    <div class="col-sm-6">
+                                        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="navbar navbar-expand-lg navbar-dark  navbar-inner">
+                    <a class="navbar-brand" href="#">
+                        <span class="fa fa-home"></span>
+                    </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <form class="inline-form" action="/updateUserProfile">
+                                <button class="btn btn-dark nav-buttons" type="button" data-toggle="modal" data-target="#update-user"> Update Profile </button>
+                            </form>
+                        </li>
+                         <li class="nav-item">
+                            <form class="inline-form" action="/deleteUserAccount">
+                                <button class="btn btn-dark nav-buttons" type="button" data-toggle="modal" data-target="#delete-user"> Delete Account </button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form class="inline-form" action="/logOut">
+                                <button class="btn btn-dark nav-buttons" type="submit" > Log out </button>
+                            </form>
+                        </li>
+                    </ul>
+                  </div>
+            </nav>
+
+    <div class="jumbotron content-jumbotron">
+            <h3> Welcome {{ session['first_name'][0] }}, </h3>
+          <p>
+            <h5> Let's go an adventure together! Book a place at your next travel destination. </h5>
+    </div>
+
+    <div class="container-fluid">
+
+
+        {% if info %}
+         <div class="alert alert-success" role="alert">
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+             </button>
+            <h5><strong>Info:</strong> {{ info }} </h5>
+         </div>
+         {% elif error %}
+         <div class="alert alert-danger" role="alert">
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+             </button>
+            <h5><strong>error:</strong> {{ error }} </h5>
+         </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-sm-6">
+                <!-- Filter for seeing available properties goes here -->
+                <div class="card border booking-filter content">
+                    <div class="card-header">
+                        <h5> Book unique homes and experiences! </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <form method="POST" action="/findProperties">
+                            <div class="form-group">
+                                <label for="bookingFilterCity">City:</label>
+                                <select class="custom-select" name="city" id="bookingFilterCity" required>
+                                    <option value="boston">Boston</option>
+                                    <option value="chicago">Chicago</option>
+                                    <option value="new_york">New York</option>
+                                </select>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="bookingFilterMinRent"> Min Rent:</label>
+                                        <input type="number" class="form-control" id="bookingFilterMinRent" name="min_rent" placeholder="Min Rent" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="bookingFilterMaxRent"> Max Rent:</label>
+                                        <input type="number"  class="form-control" id="bookingFilterMaxRent" name="max_rent" placeholder="Max Rent" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="bookingFilterCheckInDate"> Check in date:</label>
+                                        <input type="date" class="form-control" id="date"  data-provide="datepicker" name="check_in_date" placeholder="Check in date" required id="bookingFilterCheckInDate">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="bookingFilterCheckOutDate"> Check out date:</label>
+                                        <input type="date" class="form-control"  data-provide="datepicker" name="check_out_date" placeholder="Check out date" required id="bookingFilterCheckOutDate">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row justify-content-center">
+                                <button type="submit" class="btn btn-primary">
+                                   <span class="fa fa-search"> Search </span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-sm-6">
+                <!-- All other options such as cancel booking, change reservation, and rate a previous stay goes here -->
+                 <div class="card border manage-booking content">
+                        <div class="card-header">
+                            <h5> Or Manage your bookings... </h5>
+                        </div>
+
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class=" row justify-content-center">
+                                        <button type="button" class="btn btn-primary update-buttons">
+                                            Rate a previous stay
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                     <div class=" row justify-content-center">
+                                         <form  method="POST" action="/showChangeBooking">
+                                             <button type="submit" class="btn btn-warning update-buttons">
+                                                View/Change upcoming bookings
+                                             </button>
+                                         </form>
+                                     </div>
+                                </div>
+                                <div class="col-md-4">
+                                     <div class=" row justify-content-center">
+                                         <form  method="POST" action="/showAllBookings">
+                                             <button type="submit" class="btn btn-info update-buttons">
+                                                Show all bookings
+                                             </button>
+                                         </form>
+                                     </div>
+                                </div>
+
+                            </div>
+
+                            <!-- For showing all the bookings of a user -->
+                            {% if history %}
+                            <div class="row">
+                                <div class="card content">
+                                    <div class="card-header">
+                                        <h5>All your bookings:</h5>
+                                    </div>
+                                    <div class="card-body content">
+                                        <table class="table table-hover table-bordered table-show-properties content">
+                                            <thead class="thead-dark">
+                                                     <tr>
+                                                        <th scope="col"> Booking ID </th>
+                                                        <th scope="col"> Property Name </th>
+                                                        <th scope="col"> Street </th>
+                                                        <th scope="col"> City </th>
+                                                        <th scope="col"> Postcode </th>
+                                                        <th scope="col"> Rent</th>
+                                                        <th scope="col"> Check In Date </th>
+                                                        <th scope="col"> Check Out Date </th>
+                                                    </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="8"> All your past bookings: </td>
+                                                </tr>
+                                                {% for item in history %}
+                                                    {% if item[8] == 'Completed' %}
+                                                    <tr>
+                                                        <td> {{ item[0] }} </td>
+                                                        <td> {{ item[1] }} </td>
+                                                        <td> {{ item[2] }} </td>
+                                                        <td> {{ item[3] }} </td>
+                                                        <td> {{ item[4] }} </td>
+                                                        <td> {{ item[5] }} </td>
+                                                        <td> {{ item[6] }} </td>
+                                                        <td> {{ item[7] }} </td>
+                                                    </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+
+                                                <tr>
+                                                    <td colspan="8"> Your current bookings if any: </td>
+                                                </tr>
+                                                {% for item in history %}
+                                                    {% if item[8] == 'Ongoing' %}
+                                                    <tr>
+                                                        <td> {{ item[0] }} </td>
+                                                        <td> {{ item[1] }} </td>
+                                                        <td> {{ item[2] }} </td>
+                                                        <td> {{ item[3] }} </td>
+                                                        <td> {{ item[4] }} </td>
+                                                        <td> {{ item[5] }} </td>
+                                                        <td> {{ item[6] }} </td>
+                                                        <td> {{ item[7] }} </td>
+                                                    </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+
+                                                <tr>
+                                                    <td colspan="8"> All your upcoming bookings: </td>
+                                                </tr>
+                                                {% for item in history %}
+                                                    {% if item[8] == 'Upcoming' %}
+                                                    <tr>
+                                                        <td> {{ item[0] }} </td>
+                                                        <td> {{ item[1] }} </td>
+                                                        <td> {{ item[2] }} </td>
+                                                        <td> {{ item[3] }} </td>
+                                                        <td> {{ item[4] }} </td>
+                                                        <td> {{ item[5] }} </td>
+                                                        <td> {{ item[6] }} </td>
+                                                        <td> {{ item[7] }} </td>
+                                                    </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endif %}
+
+                            <!-- If the above two buttons are clicked, show properties here -->
+                            {% if result %}
+                            <div class="row">
+                                <div class="card content">
+                                    <div class="card-header">
+                                        <h5> Select the booking to change and enter new dates below... </h5>
+                                    </div>
+                                    <div class="card-body content">
+                                         <form method="POST" action="/changeBooking">
+                                            <table class="table table-hover table-bordered table-show-properties content">
+                                                <thead class="thead-dark">
+                                                     <tr>
+                                                        <th scope="col"> Booking ID </th>
+                                                        <th scope="col"> Property Name </th>
+                                                        <th scope="col"> Street </th>
+                                                        <th scope="col"> City </th>
+                                                        <th scope="col"> Postcode </th>
+                                                        <th scope="col"> Rent</th>
+                                                        <th scope="col"> Check In Date </th>
+                                                        <th scope="col"> Check Out Date </th>
+                                                        <th scope="col"> Your selection</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for item in result %}
+                                                    <tr>
+                                                        <td> {{ item[0] }} </td>
+                                                        <td> {{ item[1] }} </td>
+                                                        <td> {{ item[2] }} </td>
+                                                        <td> {{ item[3] }} </td>
+                                                        <td> {{ item[4] }} </td>
+                                                        <td> {{ item[5] }} </td>
+                                                        <td> {{ item[6] }} </td>
+                                                        <td> {{ item[7] }} </td>
+                                                        <td><input type="radio" name="changeBookingOptions" value="{{ item[0] }}" required> </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                             <button class="btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#collapsedDates" aria-expanded="false" aria-controls="collapsedDates">
+                                                Change Dates
+                                             </button>
+                                             <div class="collapse" id="collapsedDates">
+                                                 <div class="card">
+                                                     <div class="card-header">
+                                                         <h6> Select new dates: </h6>
+                                                     </div>
+                                                     <div class="card-body">
+                                                         <div class="form-row">
+                                                             <div class="col-sm-6">
+                                                                 <div class="form-group">
+                                                                    <label for="newCheckInDate">Check In Date:</label>
+                                                                    <input type="date" class="form-group" name="new_check_in_date" placeholder="Check in date" id="newCheckInDate" required>
+                                                                 </div>
+                                                             </div>
+
+                                                             <div class="col-sm-6">
+                                                                 <div class="form-group">
+                                                                    <label for="newCheckOutDate">Check Out Date:</label>
+                                                                    <input type="date" class="form-group" name="new_check_out_date" placeholder="Check out date" id="newCheckOutDate" required>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+                                                        </div>
+                                                         <div class="row justify-content-center">
+                                                             <button type="submit" class="btn btn-primary">Update Booking</button>
+                                                         </div>
+                                                      </div>
+                                                 </div>
+                                         </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <div class="row justify-content-center" id="cancelButtonDiv" >
+                                <form action="/showCancelBooking" method="POST">
+                                    <button type="submit" class="btn btn-danger" >
+                                        Cancel a booking
+                                    </button>
+                                </form>
+                            </div>
+                            <!-- Show properties for cancelling a reservation -->
+                            {% if cancel %}
+                            <div class="card content">
+                                <div class="card-header">
+                                    <h5> Choose a reservation to cancel </h5>
+                                </div>
+                                <div class="card-body">
+                                    <form method="POST" action="/cancelBooking">
+                                            <table class="table table-hover table-bordered table-show-properties content">
+                                                <thead class="thead-dark">
+                                                     <tr>
+                                                        <th scope="col"> Booking ID </th>
+                                                        <th scope="col"> Property Name </th>
+                                                        <th scope="col"> Street </th>
+                                                        <th scope="col"> City </th>
+                                                        <th scope="col"> Postcode </th>
+                                                        <th scope="col"> Rent</th>
+                                                        <th scope="col"> Check In Date </th>
+                                                        <th scope="col"> Check Out Date </th>
+                                                        <th scope="col"> Your selection</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for item in cancel %}
+                                                    <tr>
+                                                        <td> {{ item[0] }} </td>
+                                                        <td> {{ item[1] }} </td>
+                                                        <td> {{ item[2] }} </td>
+                                                        <td> {{ item[3] }} </td>
+                                                        <td> {{ item[4] }} </td>
+                                                        <td> {{ item[5] }} </td>
+                                                        <td> {{ item[6] }} </td>
+                                                        <td> {{ item[7] }} </td>
+                                                        <td><input type="radio" name="cancelBookingOptions" value="{{ item[0] }}" required> </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <div class="row justify-content-center">
+                                                <button type="submit" class="btn btn-danger">
+                                                    Confirm
+                                                </button>
+                                            </div>
+                                    </form>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                 </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</body>
+</html>

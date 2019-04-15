@@ -1,52 +1,156 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>AirBnB</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-</head>
+<!doctype html>
+    <html lang="en">
+      <head>
+         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <title>Sign In - AirBnB</title>
+      </head>
+
 <body>
 
+     <!-- Modal for adding user profile -->
+            <div class="modal fade" id="register-user" tabindex="-1" role="dialog" aria-labelledby="register-user-label" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="register-user-label">Enter the values for the user</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="/register">
+                                <div class="form-group">
+                                    <label for="add_user_name" class="col-form-label">Username:</label>
+                                    <input type="text" class="form-control"  id="add_user_name" name="username" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="add_user_first_name" class="col-form-label">First Name:</label>
+                                            <input type="text" class="form-control" name="first_name" id="add_user_first_name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="add_user_last_name" class="col-form-label">Last Name:</label>
+                                            <input type="text" class="form-control" name="last_name" id="add_user_last_name" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="add_user_password" class="col-form-label">Password:</label>
+                                    <input type="password" class="form-control" name="user_password" id="add_user_password" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="add_user_address" class="col-form-label">Address:</label>
+                                    <input type="text" class="form-control" name="address" id="add_user_address"  required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="add_user_email" class="col-form-label">Email:</label>
+                                    <input type="email" class="form-control" name="email" id="add_user_email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="add_user_number" class="col-form-label">New Phone Number:</label>
+                                    <input type="tel" class="form-control" id="add_user_number" name="phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label for="type-of-user" class="col-form-label"> Choose the account type:</label>
+                                        <div id="type-of-user" class="input-group">
+                                            <div class="input-group-prepend">
+                                               <div class="input-group-text">
+                                                    <input type="radio" name="options" value="client" aria-label="Radio button for following text input" required>
+                                                   <strong> Client Account </strong>
+                                               </div>
+                                                <div class="input-group-text">
+                                                    <input type="radio" name="options" value="owner" aria-label="Radio button for following text input" required>
+                                                   <strong> Property Owner Account </strong>
+                                               </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row justify-content-center">
+                                    <button type="submit" class="btn btn-primary">Register</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <div class="jumbotron justify-content-center content">
+            <p><h1>Welcome to our Bed and Breakfast!</h1>
+            <p>We can find you a perfect place with just a few clicks </p>
+    </div>
+  <div class="container-fluid">
 
 
-  <div class="container">
-        <div>
-            <h1> Welcome to our Bed and Breakfast service!</h1>
-        </div>
+            <div class="row justify-content-center ">
+                <div class="card content">
+                    <div class="card-header">
+                        <h3> Sign In</h3>
+                    </div>
+                    <div class="card-body">
+                    <form method="POST" action="/login" class="form-signin">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+							    <span class="input-group-text"><i class="fa fa-user"></i></span>
+						    </div>
+						    <input type="text" class="form-control" placeholder="username" name="user_name">
+                        </div>
+                        <div class="input-group form-group">
+						    <div class="input-group-prepend">
+							    <span class="input-group-text"><i class="fa fa-lock"></i></span>
+						    </div>
+						    <input type="password" class="form-control" placeholder="password" name="user_password">
+					    </div>
+                        <div class="form-group">
+                            <button type="submit" value="Login" class="btn btn-primary float-right"> Sign In </button>
+					    </div>
+                    </form>
+                    </div>
+                    <div class="card-footer">
+                        	<div class="d-flex justify-content-center">
+					            <h5>Don't have an account? </h5>
+				            </div>
+                                <div class="form-group">
+                                    <div class="row justify-content-center">
+                                    <button type="button"  class="btn btn-primary float-center" data-toggle="modal" data-target="#register-user"> Register </button>
+					                </div>
+                                </div>
+                    </div>
+                </div>
 
-        <div>
-            <p> Please login or register </p>
-        </div>
+            </div>
 
-        <p>
-        <div id="login">
-            <form method="POST" action="/login">
-                User Name:<br>
-                <input type="text" name="user_name" placeholder="UserName" > <br> <br>
-                Password: <br>
-                <input type="password" name="user_password" placeholder="Password"> <br>
-                <br>
-                <input type="submit" class="btn btn-primary" value="Login">
-                <br> <br>
-            </form>
-        </div>
 
-        <div id="register">
-            <p> <br> <h5>Or you can choose to register</h5>
-            <form method="POST" action="/redirectRegister">
-            <input type="submit" class="btn btn-primary" value = "Register">
-            </form>
-        </div>
+
+
+
+
 
       <!--  All the error messages -->
-      <div>
-          {% if error %}
-            <p class="error"><strong>Error:</strong> {{ error }}
-          {% endif %}
-      </div>
+      {% if error %}
+        <div class="alert alert-danger" role="alert">
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+             </button>
+            <h5><strong>error:</strong> {{ error }} </h5>
+         </div>
+      {% endif %}
 
-    </div>
+  </div>
 
 </body>
+
 </html>

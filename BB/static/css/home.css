@@ -1,0 +1,43 @@
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+}
+
+button{
+    padding: 15px;
+}
+
+.container{
+height: 100%;
+align-content: center;
+}
+
+.card{
+height: 370px;
+margin-top: auto;
+margin-bottom: auto;
+width: 400px;
+background-color: !important;
+}
+
+body {
+  background-image: url('../images/3.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+   backdrop-filter: blur(100px);
+  -webkit-backdrop-filter: blur(100px);
+  -webkit-backdrop-filter: sepia() hue-rotate(120deg);
+}
+
+body :before{
+    z-index: -1;
+}
+
+.content{
+    background:#7f7f7f;
+    background:rgba(255,255,255,0.85);
+    background-opacity:
+}

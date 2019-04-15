@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <link rel="stylesheet" href="../static/css/changeBooking.css">
+    <title>Change Booking</title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h2> Please select the booking that you wish to change </h2>
+            <h3> Later, enter the new check in and check out dates below and hit the button, we'll do the hard work for you! :)</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="change-booking-div d-flex justify-content-center">
+                {% if update %}
+                    <form method="POST" action="/changeBooking">
+                {% else %}
+                    <form method="POST" action="/cancelBooking">
+                {% endif %}
+                <table class="table-bordered table-hover table-dark">
+                    <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Property Name</th>
+                        <th>Street</th>
+                        <th>City</th>
+                        <th>Zipcode</th>
+                        <th>Rent</th>
+                        <th>Check In Date</th>
+                        <th>Check Out Date</th>
+                        <th>Your selection</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                            {% for item in result %}
+                            <tr>
+                                <td>{{ item[0] }}</td>
+                                <td>{{ item[1] }}</td>
+                                <td>{{ item[2] }}</td>
+                                <td>{{ item[3] }}</td>
+                                <td>{{ item[4] }}</td>
+                                <td>{{ item[5] }}</td>
+                                <td>{{ item[6] }}</td>
+                                <td>{{ item[7] }}</td>
+                                <td><input type="radio" name="changeBookingOptions" value={{ item[0] }} required></td>
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+                     <br>
+                     <p>
+                     {% if update %}
+                     <button class="btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#collapsedDates" aria-expanded="false" aria-controls="collapsedDates">
+                         Change Dates
+                     </button>
+                     </p>
+                     <div class="collapse" id="collapsedDates">
+                         <div class="card">
+                             <div class="card-header">
+                                 <h3> Select new dates: </h3>
+                             </div>
+                             <div class="card-body">
+
+                                 <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">Check in Date</span>
+                                    </div>
+                                    <input type="date" name="new_check_in_date" placeholder="Check in date" required>
+                                </div>
+
+                                 <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon2">Check out Date</span>
+                                    </div>
+                                    <input type="date" name="new_check_out_date" placeholder="Check out date" required>
+                                 </div>
+
+                                 <div class="input-group mb-3">
+                                     <button type="submit" class="btn btn-primary">Update Booking</button>
+                                 </div>
+                              </div>
+                         </div>
+                     </div>
+                    {% else %}
+                        <button class="btn-primary btn" type="submit" >
+                         Cancel Booking
+                         </button>
+                    {% endif %}
+                        {% set update = False %}
+
+                     </form>
+
+
+            </div>
+        </div>
+        <div class="row">
+  {% if error %}
+  <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
+  </div>
+    </div>
+
+
+</body>
+</html>
