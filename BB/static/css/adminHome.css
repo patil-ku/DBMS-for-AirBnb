@@ -1,0 +1,40 @@
+
+body {
+  background-image: url('../images/8.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+   backdrop-filter: blur(100px);
+  -webkit-backdrop-filter: blur(100px);
+  -webkit-backdrop-filter: sepia() hue-rotate(120deg);
+}
+
+body :before{
+    z-index: -1;
+}
+
+.content{
+    color: #f2eaea;
+    background:#7f7f7f;
+    background:rgba(0,0,0,0.5);
+    background-opacity:
+}
+
+.content-jumbotron{
+    color: #f2eaea;
+    background:#7f7f7f;
+    background:rgba(0,0,0,0.5);
+}
+
+.admin-search-user-card{
+   margin: 10px;
+   width: 70%;
+   border-radius: 5px;
+}
+
+
+.navbar-inner {
+    background:transparent;
+     background:#7f7f7f;
+    background:rgba(0,0,0,0.5);
+}

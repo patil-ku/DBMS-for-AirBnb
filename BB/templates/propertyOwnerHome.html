@@ -244,6 +244,8 @@
                                         <th scope="col"> Street </th>
                                         <th scope="col"> City </th>
                                         <th scope="col"> Postcode </th>
+                                        <th scope="col"> Rent </th>
+                                        <th scope="col"> Rating </th>
                                         <th scope="col"> Occupancy </th>
                                         <th scope="col"> Your selection</th>
                                     </tr>
@@ -256,6 +258,8 @@
                                         <td>{{ item[3] }}</td>
                                         <td>{{ item[4] }}</td>
                                         <td>{{ item[5] }}</td>
+                                        <td>{{ item[6] }}</td>
+                                        <td>{{ item[7] }}</td>
                                         <td><input type="radio" id="radio2" name="updatePropertySelectPID" value="{{ item[0] }}"  onclick="setText('{{ item[1] }}');" required>
                                             </td>
                                     </tr>
@@ -275,28 +279,6 @@
                                                 <label for="updatePropertyName"> Property Name </label>
                                                 <input type="text" class="form-control" id="updatePropertyName"  name="update_property_name" readonly >
                                             </div>
-
-                                         <!--   <div class="form-row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="updatePropertyStreet"> Street </label>
-                                                        <input type="text" class="form-control" id="updatePropertyStreet" placeholder="Street name" name="update_property_street" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="updatePropertyCity"> City </label>
-                                                        <input type="text" class="form-control" id="updatePropertyCity" placeholder="City" name="update_property_city" readonly >
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="updatePropertyZipCode"> Postcode </label>
-                                                        <input type="text" class="form-control" id="updatePropertyZipCode" placeholder="Postcode" name="update_property_postcode" required>
-                                                    </div>
-                                                </div>
-                                            </div> -->
-
                                             <div class="form-row">
                                                 <div class="form-group">
                                                     <label for="updatePropertyRent"> New Rent: </label>
